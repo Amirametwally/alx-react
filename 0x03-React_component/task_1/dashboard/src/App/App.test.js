@@ -1,25 +1,25 @@
-import { shallow } from 'enzyme';
-import App from './App';
+import { shallow } from "enzyme";
+import App from "./App";
 
-describe('<App />', () => {
-  it('test that App renders without crashing', () => {
+describe("<App />", () => {
+  it("test that App renders without crashing", () => {
     const wrapper = shallow(<App />);
     expect(wrapper.exists());
   });
-  it('verify that App renders a div with the class App-header', () => {
+  it("verify that App renders a div with the class App-header", () => {
     const wrapper = shallow(<App />);
     wrapper.update();
-    expect(wrapper.find('div.App-header')).toHaveLength(1);
+    expect(wrapper.find("div.App-header")).toHaveLength(1);
   });
-  it('verify that App renders a div with the class App-body', () => {
+  it("verify that App renders a div with the class App-body", () => {
     const wrapper = shallow(<App />);
     wrapper.update();
-    expect(wrapper.find('div.App-body')).toHaveLength(1);
+    expect(wrapper.find("div.App-body")).toHaveLength(1);
   });
-  it('verify that App renders a div with the class App-footer', () => {
+  it("verify that App renders a div with the class App-footer", () => {
     const wrapper = shallow(<App />);
     wrapper.update();
-    expect(wrapper.find('div.App-footer')).toHaveLength(1);
+    expect(wrapper.find("div.App-footer")).toHaveLength(1);
   });
 
   it("CourseList is not displayed with isLoggedIn false by default", () => {
@@ -33,11 +33,11 @@ describe('<App />', () => {
     expect(wrapper.find("Login")).toHaveLength(0);
     expect(wrapper.find("CourseList")).toHaveLength(1);
   });
-  it('logOut alerts with correct string', () => {
+  it("logOut alerts with correct string", () => {
     const myLogOut = jest.fn(() => undefined);
-    const myAlert = jest.spyOn(global, 'alert');
+    const myAlert = jest.spyOn(global, "alert");
 
-    const wrapper = shallow(<App logOut={myLogOut} />)
+    const wrapper = shallow(<App logOut={myLogOut} />);
 
     expect(myAlert);
     expect(myLogOut);
