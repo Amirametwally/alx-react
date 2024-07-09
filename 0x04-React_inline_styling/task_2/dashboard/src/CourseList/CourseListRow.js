@@ -1,48 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { StyleSheet, css } from "aphrodite";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
 
-function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
+const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
+  const style = { 'background-color': isHeader ? '#deb5b54' : '#f5f5f5ab' };
   return (
-    <tr className={isHeader ? css(styles.header) : css(styles.normal)}>
+    <tr style={style}>
       {isHeader ? (
         textSecondCell === null ? (
-          <th colSpan={2}>{textFirstCell}</th>
+          <th colSpan='2' className={css(styles.cell)}>{textFirstCell}</th>
         ) : (
-          <>
-            <th>{textFirstCell}</th>
-            <th style={headerStyle}>{textSecondCell}</th>
-          </>
+          <Fragment>
+            <th className={css(styles.cell, styles['align-left'])}>{textFirstCell}</th>
+            <th className={css(styles.cell, styles['align-left'])}>{textSecondCell}</th>
+          </Fragment>
         )
       ) : (
-        <>
-          <td>{textFirstCell}</td>
-          <td>{textSecondCell}</td>
-        </>
+        <Fragment>
+          <td className={css(styles.cell)}>{textFirstCell}</td>
+          <td className={css(styles.cell)}>{textSecondCell}</td>
+        </Fragment>
       )}
     </tr>
   );
-}
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#deb5b545",
-  },
-
-  normal: {
-    backgroundColor: "#f5f5f5ab",
-  },
-});
+};
 
 CourseListRow.propTypes = {
   isHeader: PropTypes.bool,
   textFirstCell: PropTypes.string.isRequired,
-  textSecondCell: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  textSecondCell: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 CourseListRow.defaultProps = {
   isHeader: false,
-  textSecondCell: null,
+  textSecondCell: null
 };
+
+const styles = StyleSheet.create({
+  cell: {
+    padding: '0.25rem',
+    border: '1px solid lightgray'
+  },
+  'align-left': {
+    textAlign: 'left'
+  }
+});
+
 
 export default CourseListRow;
