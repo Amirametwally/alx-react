@@ -1,59 +1,60 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
+import React from "react";
+import { StyleSheet, css } from "aphrodite";
+import CourseListRow from "./CourseListRow";
+import PropTypes from "prop-types";
+import CourseShape from "./CourseShape";
 
-import CourseListRow from './CourseListRow';
-import CourseShape from './CourseShape';
-
-const CourseList = ({ listCourses }) => {
+function CourseList({ listCourses }) {
   return (
-    <table id='CourseList' cellSpacing='0' className={css(styles.table)}>
+    <table id="CourseList" className={css(styles.table)}>
       <thead>
-      <CourseListRow textFirstCell='Available courses' isHeader={true} />
-        <CourseListRow
-          textFirstCell='Course Name'
-          textSecondCell='Credit'
-          isHeader={true}
-        />
+        <CourseListRow textFirstCell="Available courses" isHeader={true} />
+        <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true} />
       </thead>
       <tbody>
-        {listCourses.length ? (
-          listCourses.map(({ id, name, credit }) => (
-            <CourseListRow
-              key={id}
-              textFirstCell={name}
-              textSecondCell={credit}
-            />
-          ))
+        {listCourses.length > 0 ? (
+          listCourses.map(({ id, name, credit }) => <CourseListRow key={id} textFirstCell={name} textSecondCell={credit} />)
         ) : (
-          <tr>
-            <td colSpan='2' clasName={css(styles.cell)}>No course available yet</td>
-          </tr>
+          <CourseListRow textFirstCell="No course available yet" />
         )}
       </tbody>
     </table>
   );
-};
-
-CourseList.propTypes = {
-  listCourses: PropTypes.arrayOf(CourseShape)
-};
-
-CourseList.defaultProps = {
-  listCourses: []
-};
+}
 
 const styles = StyleSheet.create({
   table: {
-    width: '100%'
+    marginTop: "2em",
+    width: "100%",
+    border: "1px solid #ddd",
+    fontSize: "1.2rem",
+    marginBottom: "15em",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
-  'table-header': {
-    textAlign: 'center'
+
+  th: {
+    borderBottom: "1px solid #ddd",
+    width: "80%",
   },
-  cell: {
-    padding: '0.25rem',
-    border: '1px solid lightgray'
-  }
+
+  td: {
+    width: "80%",
+  },
+
+  tr: {
+    "nth-child(2)": {
+      textAlign: "left",
+    },
+  },
 });
+
+CourseList.propTypes = {
+  listCourses: PropTypes.arrayOf(CourseShape),
+};
+
+CourseList.defaultProps = {
+  listCourses: [],
+};
 
 export default CourseList;

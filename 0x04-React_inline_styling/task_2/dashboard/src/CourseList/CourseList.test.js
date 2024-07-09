@@ -1,73 +1,49 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
+import React from "react";
+import CourseList from "./CourseList";
+import CourseListRow from "./CourseListRow";
+import { shallow } from "enzyme";
+import { StyleSheetTestUtils } from "aphrodite";
 
-import CourseList from './CourseList';
-import CourseListRow from './CourseListRow';
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-describe('CourseList', () => {
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
+const listCourses = [
+  { id: 1, name: "ES6", credit: 60 },
+  { id: 2, name: "Webpack", credit: 20 },
+  { id: 3, name: "React", credit: 40 },
+];
 
-  afterEach(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
-
-  test('renders without crashing', () => {
+describe("CourseList component tests", () => {
+  it("should render without crashing", () => {
     const wrapper = shallow(<CourseList />);
 
     expect(wrapper.exists()).toBe(true);
   });
 
-describe('listCourses is empty', () => {
-    test('renders correctly if not specified', () => {
-      const wrapper = shallow(<CourseList />);
+  it("renders 5 different rows", () => {
+    const wrapper = shallow(<CourseList listCourses={listCourses} />);
 
-      const rows = wrapper.find(CourseListRow);
-      expect(rows.length).toBe(2);
-
-      const td = wrapper.find('tbody tr td');
-      expect(td.length).toBe(1);
-      expect(td.props()).toHaveProperty('colSpan', '2');
-      expect(td.text()).toBe('No course available yet');
+    expect(wrapper.find("thead").children()).toHaveLength(2);
+    wrapper.find("thead").forEach((node) => {
+      expect(node.equals(<CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true} />));
     });
 
-    test('renders correctly if empty array', () => {
-      const wrapper = shallow(<CourseList listCourses={[]} />);
-
-      const rows = wrapper.find(CourseListRow);
-      expect(rows.length).toBe(2);
-
-      const td = wrapper.find('tbody tr td');
-      expect(td.length).toBe(1);
-      expect(td.props()).toHaveProperty('colSpan', '2');
-      expect(td.text()).toBe('No course available yet');
-    });
+    expect(wrapper.find("tbody").children()).toHaveLength(3);
+    expect(wrapper.find("tbody").childAt(0).html()).toEqual('<tr class="normal_y7r86x"><td>ES6</td><td>60</td></tr>');
+    expect(wrapper.find("tbody").childAt(1).html()).toEqual('<tr class="normal_y7r86x"><td>Webpack</td><td>20</td></tr>');
+    expect(wrapper.find("tbody").childAt(2).html()).toEqual('<tr class="normal_y7r86x"><td>React</td><td>40</td></tr>');
   });
 
-  describe('listCourses is not empty', () => {
-    const courses = [
-      { id: 0, name: 'HTML and CSS', credit: 20 },
-      { id: 1, name: 'Javascript', credit: 40 }
-    ];
+  it("renders correctely when passed a list of courses", () => {
+    const wrapper = shallow(<CourseList listCourses={listCourses} />);
 
-    const wrapper = shallow(<CourseList listCourses={courses} />);
-    const rows = wrapper.find(CourseListRow);
-
-    test('renders correct amount of rows', () => {
-      expect(rows.length).toBe(4);
-    });
-
-    test('renders rows with correct props', () => {
-      expect(rows.at(2).props()).toHaveProperty(
-        'textFirstCell',
-        'HTML and CSS'
-      );
-      expect(rows.at(2).props()).toHaveProperty('textSecondCell', 20);
-
-      expect(rows.at(3).props()).toHaveProperty('textFirstCell', 'Javascript');
-      expect(rows.at(3).props()).toHaveProperty('textSecondCell', 40);
-    });
+    expect(wrapper.find("tbody").children()).toHaveLength(3);
+    expect(wrapper.find("tbody").childAt(0).html()).toEqual('<tr class="normal_y7r86x"><td>ES6</td><td>60</td></tr>');
+    expect(wrapper.find("tbody").childAt(1).html()).toEqual('<tr class="normal_y7r86x"><td>Webpack</td><td>20</td></tr>');
+    expect(wrapper.find("tbody").childAt(2).html()).toEqual('<tr class="normal_y7r86x"><td>React</td><td>40</td></tr>');
   });
 });
